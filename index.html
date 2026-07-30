@@ -40,75 +40,8 @@
             pointer-events: none;
         }
 
-        /* EKRAN BLOKADY */
-        #lock-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #090514;
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lock-box {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 40px 30px;
-            border-radius: 30px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            border: 1px solid rgba(255, 42, 85, 0.3);
-            box-shadow: 0 0 30px rgba(255, 42, 85, 0.15);
-        }
-
-        .lock-box h2 {
-            font-size: 1.25rem;
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-
-        .lock-box input {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid rgba(255, 42, 85, 0.4);
-            border-radius: 16px;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-            text-align: center;
-            outline: none;
-            background: #000;
-            color: #fff;
-        }
-
-        .lock-box button {
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .error-text {
-            color: #ff4d6d;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            display: none;
-            font-weight: 600;
-        }
-
         /* KONTENER PREZENTACJI */
         #presentation-container {
-            display: none;
             width: 100%;
             max-width: 550px;
             z-index: 5;
@@ -195,7 +128,6 @@
             transform: scale(1.05);
         }
 
-        /* Ukryty odtwarzacz audio */
         #audio-track {
             display: none;
         }
@@ -220,24 +152,15 @@
 </head>
 <body>
 
+    <!-- Spadające serduszka działające od razu -->
     <canvas id="canvas-bg"></canvas>
 
-    <!-- KROK 1: Ekran Blokady z Hasłem -->
-    <div id="lock-screen">
-        <div class="lock-box">
-            <h2>Wprowadź tajny kod związku:</h2>
-            <input type="text" id="pass" placeholder="Wpisz tutaj kod..." maxlength="6">
-            <button id="submit-btn">Otwórz serce</button>
-            <div id="err" class="error-text">Niepoprawny kod! Spróbuj jeszcze raz ❤️</div>
-        </div>
-    </div>
-
-    <!-- Ukryty odtwarzacz - zmieniono utwór na pewny i stabilny strumień muzyczny z Archiwum Internetowego -->
+    <!-- Odtwarzacz audio ze stabilnym, romantycznym podkładem muzycznym -->
     <audio id="audio-track" loop>
         <source src="https://archive.org" type="audio/mp3">
     </audio>
 
-    <!-- KROK 2: Prezentacja slajd po slajdzie -->
+    <!-- PREZENTACJA -->
     <div id="presentation-container">
         
         <!-- SLAJD 1: Nasze Urodziny -->
@@ -257,7 +180,7 @@
                     <span class="val">26 Sierpnia 2009 r.</span>
                 </div>
             </div>
-            <button class="next-btn" onclick="nextSlide()">Dalej ✨</button>
+            <button class="next-btn" onclick="nextSlide()">Otwórz prezentację ✨</button>
         </div>
 
         <!-- SLAJD 2: Ważne Daty -->
@@ -287,7 +210,7 @@
             <button class="next-btn" onclick="nextSlide()">Idź dalej ❤️</button>
         </div>
 
-        <!-- SLAJD 3: NOWY SLAJD - Nasz Czas -->
+        <!-- SLAJD 3: Nasze Chwile -->
         <div class="slide">
             <h1>Nasze Chwile</h1>
             <div class="neon-row">
@@ -307,7 +230,7 @@
             <button class="next-btn" onclick="nextSlide()">Odkryj więcej 🌹</button>
         </div>
 
-        <!-- SLAJD 4: NOWY SLAJD - Przyszłość -->
+        <!-- SLAJD 4: Przyszłość -->
         <div class="slide">
             <h1>Nasza Przyszłość</h1>
             <div class="neon-row">
@@ -318,3 +241,48 @@
                 </div>
             </div>
             <div class="neon-row">
+                <div class="row-icon">🔐</div>
+                <div class="row-text">
+                    <span class="label">Obietnica serca</span>
+                    <span class="val">Zawsze będę przy Tobie.</span>
+                </div>
+            </div>
+            <button class="next-btn" onclick="nextSlide()">Nasza nuta 🎵</button>
+        </div>
+
+        <!-- SLAJD 5: Muzyka -->
+        <div class="slide">
+            <h1>Nasza Muzyka</h1>
+            <div style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 20px; border: 1px dashed var(--primary); margin-bottom: 20px;">
+                <span style="font-size: 3.5rem; display: block; margin-bottom: 10px; animation: spinDisc 4s linear infinite;">🎵</span>
+                <h3 style="font-size: 1.4rem; color: #fff;">Nie jest wcale</h3>
+                <p style="color: var(--accent); font-size: 0.95rem; margin-top: 5px; font-weight: 600;">Utwór: Janek</p>
+                <p style="font-size: 0.8rem; color: #a0aec0; margin-top: 15px;">(Muzyka gra teraz pięknie w tle!)</p>
+            </div>
+            <style>@keyframes spinDisc { 100% { transform: rotate(360deg); } }</style>
+            <button class="next-btn" onclick="nextSlide()">Przeczytaj list ✉️</button>
+        </div>
+
+        <!-- SLAJD 6: List miłosny -->
+        <div class="slide">
+            <h1>Dla Ciebie...</h1>
+            <div class="letter-content">
+                "Konstansiu, dziękuję że Cię mam. Kocham Cię całym moim serduszkiem i mam nadzieję, że spędzimy całe życie razem. Kocham Cię bardzoooooooooo!"
+            </div>
+            <div class="signature">Na zawsze Twój ❤️</div>
+        </div>
+    </div>
+
+    <script>
+        // Logika przełączania slajdów i uruchamiania audio za pomocą kliknięcia
+        var currentSlideIndex = 0;
+        var slides = document.querySelectorAll('.slide');
+
+        function nextSlide() {
+            // Uruchomienie muzyki przy pierwszym kliknięciu dowolnego przycisku (obejście blokad przeglądarki)
+            var track = document.getElementById('audio-track');
+            if (track.paused) { 
+                track.play().catch(function(e){ console.log("Odtwarzanie wstrzymane"); }); 
+            }
+
+            // Przełącz slajd
