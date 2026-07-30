@@ -3,82 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dla Konstancji</title>
+    <title>Dla Konstancji ❤️</title>
     <style>
-        :root { --p: #ff4d6d; --s: #ff85a1; --d: #2b2d42; --l: #fff0f3; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background-color: var(--l); color: var(--d); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #ff758c, #ff7eb3); z-index: 99; display: flex; justify-content: center; align-items: center; }
-        .box { background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 20px; text-align: center; max-width: 450px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h2 { margin-bottom: 20px; color: var(--p); font-size: 1.4rem; }
-        input { width: 100%; padding: 12px; border: 2px solid var(--s); border-radius: 10px; margin-bottom: 15px; font-size: 1.2rem; text-align: center; outline: none; }
-        button { background: var(--p); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; }
-        .error-text { color: red; margin-top: 10px; display: none; font-size: 0.9rem; }
-        #main-content { display: none; width: 100%; max-width: 500px; z-index: 5; }
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        h1 { color: var(--p); text-align: center; margin-bottom: 20px; }
-        .item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed var(--s); text-align: left; }
-        .item:last-child { border: none; margin: 0; padding: 0; }
-        .item span { font-weight: bold; color: var(--p); display: block; font-size: 1.1rem; }
-        .player { background: linear-gradient(135deg, var(--p), var(--s)); color: white; padding: 20px; border-radius: 15px; text-align: center; }
-        .letter { line-height: 1.6; font-style: italic; text-align: center; }
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #ff85a1;
+            --dark: #2b2d42;
+            --light: #fff0f3;
+            --card-bg: rgba(255, 255, 255, 0.92);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Pływające tło z sercami */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Ekran logowania */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .lock-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            transform: translateY(0);
+            animation: floatLock 4s ease-in-out infinite;
+        }
+
+        @keyframes floatLock {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .lock-box h2 {
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .lock-box input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            text-align: center;
+            letter-spacing: 6px;
+            outline: none;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            color: var(--dark);
+        }
+
+        .lock-box button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255,77,109,0.2);
+        }
+
+        .lock-box button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(255,77,109,0.4);
+        }
+
+        .error-text {
+            color: #fff;
+            background: rgba(255, 51, 85, 0.8);
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        /* Główna zawartość */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 550px;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 1s ease;
+            padding-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(255,77,109,0.08);
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.6);
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        /* Animacja wjazdu kart */
+        .show-card {
+            animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        h1::after {
+            content: '❤️';
+            display: block;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        /* Nowe slajdy / Wiersze */
+        .slide-item {
+            background: linear-gradient(145deg, #ffffff, #fff5f6);
+            padding: 18px 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease;
+        }
+
+        .slide-item:hover {
+            transform: scale(1.02) translateX(5px);
+        }
+
+        .slide-item:last-child { margin-bottom: 0; }
+
+        .slide-icon {
+            font-size: 2rem;
+            background: var(--light);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .slide-info label {
+            font-size: 0.85rem;
+            color: #7d8597;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+        }
+
+        .slide-info p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-top: 2px;
+        }
+
+        /* Odtwarzacz muzyczny premium */
+        .player-card {
+            background: linear-gradient(135deg, #2b2d42 0%, #1a1b29 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .disc-anim {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #333 30%, #111 70%);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 3px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            animation: spin 4s linear infinite;
+            animation-play-state: paused;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .player-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+            color: var(--secondary);
+        }
+
+        .player-card p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .play-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* List miłosny */
+        .letter-card {
+            background: linear-gradient(to bottom right, #ffffff, #fff0f3);
+            border: 2px solid var(--secondary);
+        }
+
+        .letter-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            text-align: center;
+            color: #4a4e69;
+            font-style: italic;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .signature {
+            margin-top: 25px;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.3rem;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Animowane tło -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- KROK 1: Ekran blokady -->
     <div id="lock-screen">
-        <div class="box">
-            <h2>Wprowadź kod, aby otworzyć stronę:</h2>
+        <div class="lock-box">
+            <h2>Wprowadź tajny kod związku:</h2>
             <input type="password" id="pass" placeholder="••••••" maxlength="6">
             <button onclick="check()">Otwórz serce</button>
-            <div id="err" class="error-text">Niepoprawny kod! ❤️</div>
+            <div id="err" class="error-text">Niepoprawny kod! Spróbuj jeszcze raz ❤️</div>
         </div>
     </div>
 
+    <!-- KROK 2: Główna witryna -->
     <div id="main-content">
-        <div class="card">
-            <h1>Nasza Historia</h1>
-            <div class="item">Moje Urodziny: <span>17 Listopada 2008 r.</span></div>
-            <div class="item">Urodziny Konstancji: <span>26 Sierpnia 2009 r.</span></div>
-        </div>
-
-        <div class="card">
-            <div class="item">Dzień, w którym się poznaliśmy: <span>26 Lipca 2025 r.</span></div>
-            <div class="item">Oficjalnie razem od: <span>14 Listopada 2025 r.</span></div>
-            <div class="item">Wspólne pół roku: <span>14 Maja 2026 r.</span></div>
-        </div>
-
-        <div class="card">
-            <div class="player">
-                <h3>Nie jest wcale</h3>
-                <p style="font-size:0.85rem; opacity:0.8; margin-bottom:10px;">Janek</p>
-                <audio id="song" src="https://soundhelix.com"></audio>
-                <button style="background:white; color:var(--p); width:50px; height:50px; border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center;" onclick="play()">▶</button>
+        
+        <!-- Sekcja 1: Profile / Urodziny -->
+        <div class="card" id="c1">
+            <h1>Nasze Urodziny</h1>
+            <div class="slide-item">
+                <div class="slide-icon">👦</div>
+                <div class="slide-info">
+                    <label>Moje Urodziny</label>
+                    <p>17 Listopada 2008 r.</p>
+                </div>
+            </div>
+            <div class="slide-item">
+                <div class="slide-icon">👧</div>
+                <div class="slide-info">
+                    <label>Urodziny Konstancji</label>
+                    <p>26 Sierpnia 2009 r.</p>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="letter">
-                "Konstansiu, dziękuję że Cię mam. Kocham Cię całym moim serduszkiem i mam nadzieję, że spędzimy całe życie razem. Kocham Cię bardzoooooooooo!"
-                <div style="margin-top: 15px; font-weight: bold; color: var(--p);">Na zawsze Twój ❤️</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function check() {
-            if (document.getElementById('pass').value === '260725') {
-                document.getElementById('lock-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-            } else {
-                document.getElementById('err').style.display = 'block';
-                document.getElementById('pass').value = '';
-            }
-        }
-        function play() {
-            const s = document.getElementById('song');
-            if (s.paused) { s.play(); } else { s.pause(); }
-        }
-    </script>
-</body>
-</html>
+        <!-- Sekcja 2: Kalendarium związku -->
+        <div class="card" id="c2">
+            <h1>Ważne Daty</h1>
+            <div class="slide-item">
+                <div class="slide-icon">✨</div>
+                <div class="slide-info">
