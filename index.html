@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dla Mojej Konstancji ❤️</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff2a55;
+            --accent: #ff758c;
+            --bg-dark: #0f0c1b;
+            --border: rgba(255, 42, 85, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1f122b 0%, #090514 100%);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* KONTENER PREZENTACJI */
+        #presentation-container {
+            width: 100%;
+            max-width: 550px;
+            z-index: 5;
+            position: relative;
+        }
+
+        /* INTERAKTYWNY SLAJD */
+        .slide {
+            display: none;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px 30px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 40px rgba(255, 42, 85, 0.2);
+            text-align: center;
+            animation: slideInEffect 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideInEffect {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        h1 {
+            font-family: 'Caveat', cursive;
+            color: #fff;
+            font-size: 3.4rem;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--accent);
+        }
+
+        /* Świecące wiersze */
+        .neon-row {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-left: 5px solid var(--primary);
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .neon-row:hover {
+            transform: translateX(5px) scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 42, 85, 0.3);
+            background: rgba(255, 42, 85, 0.05);
+        }
+
+        .neon-row:last-child { margin-bottom: 0; }
+        .row-icon { font-size: 2.5rem; filter: drop-shadow(0 0 5px var(--primary)); }
+        .row-text { display: flex; flex-direction: column; }
+
+        .row-text .label {
+            font-size: 0.8rem;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .row-text .val {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Nowoczesny Odtwarzacz */
+        .music-card {
+            background: linear-gradient(135deg, rgba(255,42,85,0.2) 0%, rgba(0,0,0,0.6) 100%);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--primary);
+            margin-bottom: 20px;
+            box-shadow: 0 0 25px rgba(255, 42, 85, 0.2);
+        }
+
+        .disc-wrapper {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: spinDisc 4s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .playing .disc-wrapper {
+            animation-play-state: running;
+        }
+
+        @keyframes spinDisc { 100% { transform: rotate(360deg); } }
+
+        /* Neonowe przyciski sterowania */
+        .action-btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 5px 20px rgba(255, 42, 85, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 25px rgba(255, 42, 85, 0.7);
+        }
+
+        /* List miłosny */
+        .letter-content {
+            font-family: 'Caveat', cursive;
+            font-size: 2.3rem;
+            line-height: 1.6;
+            text-align: center;
+            color: #f7fafc;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .signature {
+            font-family: 'Caveat', cursive;
+            font-size: 2.8rem;
+            margin-top: 25px;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animowane spadające serduszka -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- Odtwarzacz audio (Szybki i stabilny serwer streamingu muzyki) -->
+    <audio id="audio-track" loop>
+        <source src="https://soundhelix.com" type="audio/mp3">
+    </audio>
+
+    <div id="presentation-container">
+        
+        <!-- SLAJD 1: Muzyka i wejście (Wymagane kliknięcie odblokowuje dźwięk) -->
+        <div class="slide active" id="slide1">
+            <h1>Nasza Nuta</h1>
+            <div class="music-card" id="music-container">
+                <div class="disc-wrapper">🎵</div>
+                <h3 style="font-size: 1.4rem;">Nie jest wcale</h3>
+                <p style="color: var(--accent); font-size: 0.95rem; margin-top: 5px; font-weight: 600;">Janek</p>
+            </div>
+            <button class="action-btn" onclick="startPresentation()">Włącz muzykę i wejdź ✨</button>
+        </div>
+
+        <!-- SLAJD 2: Nasze Urodziny -->
+        <div class="slide">
+            <h1>Nasze Urodziny</h1>
+            <div class="neon-row">
+                <div class="row-icon">👦</div>
+                <div class="row-text">
+                    <span class="label">Moje Urodziny</span>
+                    <span class="val">17 Listopada 2008 r.</span>
+                </div>
+            </div>
+            <div class="neon-row">
+                <div class="row-icon">👧</div>
+                <div class="row-text">
+                    <span class="label">Urodziny Konstancji</span>
+                    <span class="val">26 Sierpnia 2009 r.</span>
+                </div>
+            </div>
+            <button class="action-btn" onclick="nextSlide()">Nasza historia ⚡</button>
+        </div>
+
+        <!-- SLAJD 3: Ważne Daty -->
+        <div class="slide">
+            <h1>Ważne Daty</h1>
+            <div class="neon-row">
+                <div class="row-icon">✨</div>
+                <div class="row-text">
+                    <span class="label">Dzień, w którym się poznaliśmy</span>
+                    <span class="val">26 Lipca 2025 r.</span>
+                </div>
+            </div>
+            <div class="neon-row">
+                <div class="row-icon">💖</div>
+                <div class="row-text">
+                    <span class="label">Oficjalnie razem od</span>
+                    <span class="val">14 Listopada 2025 r.</span>
+                </div>
+            </div>
+            <div class="neon-row">
+                <div class="row-icon">🌹</div>
+                <div class="row-text">
+                    <span class="label">Wspólne pół roku</span>
+                    <span class="val">14 Maja 2026 r.</span>
+                </div>
+            </div>
+            <button class="action-btn" onclick="nextSlide()">Otwórz list ✉️</button>
+        </div>
+
+        <!-- SLAJD 4: List Miłosny -->
+        <div class="slide">
+            <h1>Dla Ciebie...</h1>
+            <div class="letter-content">
+                "konstansiu dziekuje ze cie mam kocham cie calym moim serduszkiem i mam nadzieje ze spedzimy cale zycie razem kocham cie bardzoooooooooo"
+            </div>
+            <div class="signature">Na zawsze Twój ❤️</div>
+        </div>
+
+    </div>
+
+    <script>
+        var currentSlide = 0;
+        var slides = document.querySelectorAll('.slide');
+        var audio = document.getElementById('audio-track');
+        var musicContainer = document.getElementById('music-container');
+
+        // Funkcja startowa - uruchamia muzykę i przełącza na informacje
+        function startPresentation() {
+            audio.play().then(function() {
+                musicContainer.classList.add('playing');
+            }).catch(function(e) {
+                console.log("Audio block bypass active");
+            });
+            nextSlide();
+        }
+
+        // Płynne przełączanie slajdów (prezentacja)
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide++;
+            if (currentSlide < slides.length) {
+                slides[currentSlide].classList.add('active');
+            }
+        }
+
+        // --- APELACJA SPADAJĄCYCH SERDUSZEK ---
+        var canvas = document.getElementById('canvas-bg');
+        var ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
