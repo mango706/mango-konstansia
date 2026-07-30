@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dla Konstancji ❤️</title>
+    <title>Dla Mojej Konstancji ❤️</title>
+    <!-- Import pięknych, nowoczesnych czcionek z Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff4d6d;
-            --secondary: #ff85a1;
-            --dark: #2b2d42;
-            --light: #fff0f3;
-            --card-bg: rgba(255, 255, 255, 0.92);
+            --primary: #ff2a55;
+            --accent: #ff758c;
+            --bg-dark: #0f0c1b;
+            --card-bg: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 42, 85, 0.3);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background-color: var(--light);
-            color: var(--dark);
+            background-color: var(--bg-dark);
+            background: radial-gradient(circle at center, #1f122b 0%, #090514 100%);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -31,7 +34,7 @@
             overflow-x: hidden;
         }
 
-        /* Pływające tło z sercami */
+        /* Canvas - Spadające serduszka */
         #canvas-bg {
             position: fixed;
             top: 0;
@@ -42,91 +45,89 @@
             pointer-events: none;
         }
 
-        /* Ekran logowania */
+        /* Ekran blokady */
         #lock-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            background: linear-gradient(135deg, #1f122b, #090514);
             z-index: 999;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.8s ease-in-out;
+            transition: all 1s ease-in-out;
         }
 
         .lock-box {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 40px 30px;
-            border-radius: 24px;
+            border-radius: 30px;
             text-align: center;
             max-width: 400px;
             width: 90%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            transform: translateY(0);
-            animation: floatLock 4s ease-in-out infinite;
-        }
-
-        @keyframes floatLock {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            border: 1px solid rgba(255, 42, 85, 0.2);
+            box-shadow: 0 0 40px rgba(255, 42, 85, 0.1);
         }
 
         .lock-box h2 {
-            color: white;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin-bottom: 25px;
-            font-weight: 500;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
 
         .lock-box input {
             width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
             margin-bottom: 20px;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             text-align: center;
-            letter-spacing: 6px;
+            letter-spacing: 8px;
             outline: none;
-            background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            color: var(--dark);
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            transition: all 0.3s;
+        }
+
+        .lock-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 42, 85, 0.4);
         }
 
         .lock-box button {
-            background: white;
-            color: var(--primary);
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
             border: none;
-            padding: 14px;
-            border-radius: 14px;
+            padding: 15px;
+            border-radius: 16px;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255,77,109,0.2);
+            box-shadow: 0 5px 20px rgba(255, 42, 85, 0.4);
+            transition: all 0.3s;
         }
 
         .lock-box button:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 20px rgba(255,77,109,0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 42, 85, 0.6);
         }
 
         .error-text {
-            color: #fff;
-            background: rgba(255, 51, 85, 0.8);
+            color: #ff4d6d;
             margin-top: 15px;
-            padding: 10px;
-            border-radius: 10px;
-            display: none;
             font-size: 0.9rem;
+            display: none;
+            font-weight: 600;
         }
 
         /* Główna zawartość */
@@ -136,183 +137,198 @@
             max-width: 550px;
             z-index: 5;
             opacity: 0;
-            transition: opacity 1s ease;
-            padding-bottom: 40px;
+            transition: opacity 1.5s ease;
+            padding: 20px 0;
+        }
+
+        /* Stylizacja nagłówków sekcji */
+        h1 {
+            font-family: 'Caveat', cursive;
+            color: #fff;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--accent);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { text-shadow: 0 0 10px var(--primary), 0 0 20px var(--accent); }
+            to { text-shadow: 0 0 15px var(--primary), 0 0 30px var(--accent), 0 0 40px var(--primary); }
         }
 
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(255,77,109,0.08);
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            margin-bottom: 35px;
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(50px);
         }
 
-        /* Animacja wjazdu kart */
+        /* Klasa dodawana przez JS dająca efekt animowanego wjazdu */
         .show-card {
-            animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: customFadeIn 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-        @keyframes slideUp {
+        @keyframes customFadeIn {
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 {
-            color: var(--primary);
-            text-align: center;
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        h1::after {
-            content: '❤️';
-            display: block;
-            font-size: 1.2rem;
-            margin-top: 5px;
-        }
-
-        /* Nowe slajdy / Wiersze */
-        .slide-item {
-            background: linear-gradient(145deg, #ffffff, #fff5f6);
-            padding: 18px 20px;
-            border-radius: 16px;
-            margin-bottom: 15px;
+        /* Super nowoczesne wiersze z napisami */
+        .neon-row {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-            transition: transform 0.3s ease;
-        }
-
-        .slide-item:hover {
-            transform: scale(1.02) translateX(5px);
-        }
-
-        .slide-item:last-child { margin-bottom: 0; }
-
-        .slide-icon {
-            font-size: 2rem;
-            background: var(--light);
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .slide-info label {
-            font-size: 0.85rem;
-            color: #7d8597;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: block;
-        }
-
-        .slide-info p {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-top: 2px;
-        }
-
-        /* Odtwarzacz muzyczny premium */
-        .player-card {
-            background: linear-gradient(135deg, #2b2d42 0%, #1a1b29 100%);
-            color: white;
-            text-align: center;
+            gap: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .disc-anim {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #333 30%, #111 70%);
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            border: 3px solid rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            animation: spin 4s linear infinite;
-            animation-play-state: paused;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        .player-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-            color: var(--secondary);
-        }
-
-        .player-card p {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            margin-bottom: 20px;
-        }
-
-        .play-btn {
+        .neon-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
             background: var(--primary);
-            color: white;
-            border: none;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            margin: 0 auto;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .neon-row:hover {
+            transform: scale(1.04) translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(255, 42, 85, 0.25);
+            background: rgba(255, 42, 85, 0.03);
+        }
+
+        .neon-row:last-child { margin-bottom: 0; }
+
+        .row-icon {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 8px var(--primary));
+        }
+
+        .row-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row-text .label {
+            font-size: 0.8rem;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .row-text .val {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Odtwarzacz Muzyczny premium */
+        .music-widget {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(255,42,85,0.1) 0%, rgba(0,0,0,0.4) 100%);
+            padding: 25px;
+            border-radius: 24px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 25px rgba(255,42,85,0.15);
+        }
+
+        .music-info {
+            text-align: left;
+        }
+
+        .music-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .music-info p {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .play-circle {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
             justify-content: center;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--primary);
             transition: all 0.3s ease;
         }
 
-        .play-btn:hover {
+        .play-circle:hover {
             transform: scale(1.1);
+            background: var(--primary);
         }
 
-        /* List miłosny */
-        .letter-card {
-            background: linear-gradient(to bottom right, #ffffff, #fff0f3);
-            border: 2px solid var(--secondary);
+        .play-circle svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--bg-dark);
+            transition: fill 0.3s;
+            margin-left: 4px; /* Optyczne wyśrodkowanie trójkąta */
         }
 
-        .letter-text {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            text-align: center;
-            color: #4a4e69;
-            font-style: italic;
+        .play-circle:hover svg {
+            fill: #fff;
+        }
+
+        /* List Miłosny */
+        .letter-box {
             position: relative;
-            padding: 10px 0;
+            padding: 15px 10px;
+        }
+
+        .letter-content {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            line-height: 1.6;
+            text-align: center;
+            color: #f7fafc;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .signature {
-            margin-top: 25px;
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.3rem;
+            font-family: 'Caveat', cursive;
+            font-size: 2.2rem;
+            margin-top: 30px;
+            color: var(--accent);
             text-align: center;
-            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px var(--primary);
         }
     </style>
 </head>
 <body>
 
-    <!-- Animowane tło -->
+    <!-- Animowane tło ze SPADAJĄCYMI sercami -->
     <canvas id="canvas-bg"></canvas>
 
     <!-- KROK 1: Ekran blokady -->
@@ -325,31 +341,6 @@
         </div>
     </div>
 
-    <!-- KROK 2: Główna witryna -->
+    <!-- KROK 2: Główna zawartość -->
     <div id="main-content">
         
-        <!-- Sekcja 1: Profile / Urodziny -->
-        <div class="card" id="c1">
-            <h1>Nasze Urodziny</h1>
-            <div class="slide-item">
-                <div class="slide-icon">👦</div>
-                <div class="slide-info">
-                    <label>Moje Urodziny</label>
-                    <p>17 Listopada 2008 r.</p>
-                </div>
-            </div>
-            <div class="slide-item">
-                <div class="slide-icon">👧</div>
-                <div class="slide-info">
-                    <label>Urodziny Konstancji</label>
-                    <p>26 Sierpnia 2009 r.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sekcja 2: Kalendarium związku -->
-        <div class="card" id="c2">
-            <h1>Ważne Daty</h1>
-            <div class="slide-item">
-                <div class="slide-icon">✨</div>
-                <div class="slide-info">
