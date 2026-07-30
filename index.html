@@ -41,7 +41,7 @@
             pointer-events: none;
         }
 
-        /* AKTYWNY, PANCERNY EKRAN BLOKADY */
+        /* EKRAN BLOKADY */
         #secure-lock-screen {
             position: fixed;
             top: 0;
@@ -53,6 +53,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: opacity 0.5s ease;
         }
 
         .lock-container {
@@ -108,7 +109,23 @@
             font-weight: 600;
         }
 
-        /* GŁÓWNY PANEL STRONY (UKRYTY DO MOMENTU WPISANIA HASŁA) */
+        /* EFEKT WIELKIEGO SERCA PO KLIKNIĘCIU */
+        #transition-heart {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            font-size: 2rem;
+            color: var(--primary);
+            text-shadow: 0 0 30px var(--primary);
+            transition: transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+            pointer-events: none;
+        }
+
+        .animate-heart {
+            transform: scale(40);
+        }
+
+        /* GŁÓWNA ZAWARTOŚĆ STRONY */
         #main-content {
             display: none;
             width: 100%;
@@ -146,15 +163,8 @@
             align-items: center;
             gap: 20px;
             border-left: 5px solid var(--primary);
-            transition: transform 0.3s;
         }
 
-        .neon-row:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 15px rgba(255, 42, 85, 0.3);
-        }
-
-        .neon-row:last-child { margin-bottom: 0; }
         .row-icon { font-size: 2.3rem; }
         .row-text { display: flex; flex-direction: column; }
 
@@ -211,10 +221,12 @@
 </head>
 <body>
 
-    <!-- Animowane tło ze spadającymi serduszkami (Działa zawsze w tle) -->
     <canvas id="canvas-bg"></canvas>
 
-    <!-- EKRAN ZABEZPIECZAJĄCY HASEŁKIEM -->
+    <!-- Wielkie serce animacji przejścia -->
+    <div id="transition-heart">❤️</div>
+
+    <!-- EKRAN BLOKADY -->
     <div id="secure-lock-screen">
         <div class="lock-container">
             <h2>Wprowadź tajny kod związku:</h2>
@@ -224,15 +236,14 @@
         </div>
     </div>
 
-    <!-- Odtwarzacz audio w tle (Romantyczny, stabilny podkład instrumentalny) -->
-    <audio id="audio-track" loop>
-        <source src="https://archive.org" type="audio/mp3">
+    <!-- Odtwarzacz audio (Super lekki strumień mp3) -->
+    <audio id="audio-track" loop preload="auto">
+        <source src="https://soundhelix.com" type="audio/mp3">
     </audio>
 
-    <!-- Główna zawartość strony (Odsłaniana po podaniu hasła) -->
+    <!-- GŁÓWNA ZAWARTOŚĆ -->
     <div id="main-content">
         
-        <!-- Piosenka Janka -->
         <div class="card">
             <div class="music-widget">
                 <div class="music-info">
@@ -243,7 +254,6 @@
             </div>
         </div>
 
-        <!-- Sekcja: Nasze Urodziny -->
         <div class="card">
             <h1>Nasze Urodziny</h1>
             <div class="neon-row">
@@ -262,7 +272,6 @@
             </div>
         </div>
 
-        <!-- Sekcja: Ważne Daty -->
         <div class="card">
             <h1>Ważne Daty</h1>
             <div class="neon-row">
@@ -288,7 +297,6 @@
             </div>
         </div>
 
-        <!-- Sekcja: List Miłosny -->
         <div class="card">
             <div class="letter-content">
                 "konstansiu dziekuje ze cie mam kocham cie calym moim serduszkiem i mam nadzieje ze spedzimy cale zycie razem kocham cie bardzoooooooooo"
@@ -298,13 +306,12 @@
     </div>
 
     <script>
-        // Całkowicie niezawodny, przetestowany system weryfikacji hasła
         function verifyAndStart() {
             var typedCode = document.getElementById('relation-code').value.trim();
             
             if (typedCode === '260725') {
-                // Ukrycie ekranu blokady
-                document.getElementById('secure-lock-screen').style.display = 'none';
-                // Pokazanie zawartości niespodzianki
-                document.getElementById('main-content').style.display = 'block';
-                
+                var lockScreen = document.getElementById('secure-lock-screen');
+                var mainContent = document.getElementById('main-content');
+                var transHeart = document.getElementById('transition-heart');
+                var musicTrack = document.getElementById('audio-track');
+
