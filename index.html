@@ -122,6 +122,9 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             background: rgba(0,0,0,0.2);
             aspect-ratio: 4 / 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .photo-container img {
@@ -159,14 +162,14 @@
 
     <div id="main-container">
         
-        <!-- LINK DO UTWORU JANKA (MOŻESZ PODMIENIĆ ADRES) -->
+        <!-- ODTWARZACZ / LINK -->
         <div class="card">
             <h1>Nasza Nuta</h1>
             <a href="https://youtube.com" target="_blank" class="music-link-btn">
                 <span>🎵</span>
                 <span>Otwórz: Janek - Nie jest wcale</span>
             </a>
-            <p style="font-size: 0.8rem; color: #a0aec0; margin-top: 12px;">Kliknij, aby odpalić piosenkę w nowej karcie!</p>
+            <p style="font-size: 0.8rem; color: #a0aec0; margin-top: 12px;">Kliknij, aby odpalić piosenkę v nowej karcie!</p>
         </div>
 
         <!-- NASZE URODZINY -->
@@ -214,18 +217,18 @@
             </div>
         </div>
 
-        <!-- POPRAWIONA GALERIA SZUKAJĄCA .JPEG -->
+        <!-- INTELIGENTNA GALERIA FOTO -->
         <div class="card">
             <h1>Nasze Zdjęcia</h1>
             <div class="photo-gallery">
                 <div class="photo-container">
-                    <img src="foto1.jpeg" alt="Nasze Wspomnienie 1" onerror="this.style.display='none'; this.parentNode.innerHTML='<p style=\"padding:50px 10px; color:#a0aec0; font-size:0.9rem;\">Błąd ładowania foto1.jpeg</p>'">
+                    <img id="img1" src="foto1.jpeg" alt="Nasze Wspomnienie 1">
                 </div>
                 <div class="photo-container">
-                    <img src="foto2.jpeg" alt="Nasze Wspomnienie 2" onerror="this.style.display='none'; this.parentNode.innerHTML='<p style=\"padding:50px 10px; color:#a0aec0; font-size:0.9rem;\">Błąd ładowania foto2.jpeg</p>'">
+                    <img id="img2" src="foto2.jpeg" alt="Nasze Wspomnienie 2">
                 </div>
                 <div class="photo-container">
-                    <img src="foto3.jpeg" alt="Nasze Wspomnienie 3" onerror="this.style.display='none'; this.parentNode.innerHTML='<p style=\"padding:50px 10px; color:#a0aec0; font-size:0.9rem;\">Błąd ładowania foto3.jpeg</p>'">
+                    <img id="img3" src="foto3.jpeg" alt="Nasze Wspomnienie 3">
                 </div>
             </div>
         </div>
@@ -242,6 +245,28 @@
     </div>
 
     <script>
+        // System automatycznego dopasowania formatu pliku (odporny na wielkość liter)
+        function fixImageFormats(imgId, baseName) {
+            var img = document.getElementById(imgId);
+            var formats = ['.jpeg', '.JPEG', '.jpg', '.JPG', '.png', '.PNG'];
+            var counter = 0;
+
+            img.onerror = function() {
+                counter++;
+                if (counter < formats.length) {
+                    img.src = baseName + formats[counter];
+                } else {
+                    img.style.display = 'none';
+                    img.parentNode.innerHTML = '<p style="padding:40px 10px; color:#a0aec0; font-size:0.85rem;">Błąd załadowania pliku ' + baseName + '</p>';
+                }
+            };
+        }
+
+        // Aktywacja sprawdzania dla każdego zdjęcia
+        fixImageFormats('img1', 'foto1');
+        fixImageFormats('img2', 'foto2');
+        fixImageFormats('img3', 'foto3');
+
         // --- ANIMACJA SPADAJĄCYCH SERDUSZEK ---
         var canvas = document.getElementById('canvas-bg');
         var ctx = canvas.getContext('2d');
@@ -278,16 +303,3 @@
             ctx.globalAlpha = opacity;
             ctx.fillStyle = '#ff2a55';
             ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.bezierCurveTo(x - size/2, y - size/2, x - size, y + size/3, x, y + size);
-            ctx.bezierCurveTo(x + size, y + size/3, x + size/2, y - size/2, x, y);
-            ctx.fill();
-            ctx.restore();
-        }
-
-        function animationLoop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (var i = 0; i < hearts.length; i++) {
-                var h = hearts[i];
-                h.y += h.speedY;
-                h.swing += h.swingSpeed;
