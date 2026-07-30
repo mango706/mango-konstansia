@@ -162,14 +162,14 @@
 
     <div id="main-container">
         
-        <!-- ODTWARZACZ / LINK -->
+        <!-- ODTWARZACZ Z POPRAWIONYM LINKIEM DO JANKA -->
         <div class="card">
             <h1>Nasza Nuta</h1>
             <a href="https://youtube.com" target="_blank" class="music-link-btn">
                 <span>🎵</span>
                 <span>Otwórz: Janek - Nie jest wcale</span>
             </a>
-            <p style="font-size: 0.8rem; color: #a0aec0; margin-top: 12px;">Kliknij, aby odpalić piosenkę v nowej karcie!</p>
+            <p style="font-size: 0.8rem; color: #a0aec0; margin-top: 12px;">Kliknij, aby odpalić piosenkę na YouTube!</p>
         </div>
 
         <!-- NASZE URODZINY -->
@@ -245,7 +245,7 @@
     </div>
 
     <script>
-        // System automatycznego dopasowania formatu pliku (odporny na wielkość liter)
+        // System formatów plików foto
         function fixImageFormats(imgId, baseName) {
             var img = document.getElementById(imgId);
             var formats = ['.jpeg', '.JPEG', '.jpg', '.JPG', '.png', '.PNG'];
@@ -262,7 +262,6 @@
             };
         }
 
-        // Aktywacja sprawdzania dla każdego zdjęcia
         fixImageFormats('img1', 'foto1');
         fixImageFormats('img2', 'foto2');
         fixImageFormats('img3', 'foto3');
@@ -303,3 +302,4 @@
             ctx.globalAlpha = opacity;
             ctx.fillStyle = '#ff2a55';
             ctx.beginPath();
+            ctx.moveTo(x, y);
