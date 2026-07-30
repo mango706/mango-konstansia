@@ -10,6 +10,7 @@
             --primary: #ff2a55;
             --accent: #ff758c;
             --bg-dark: #0f0c1b;
+            --border: rgba(255, 42, 85, 0.35);
         }
 
         * {
@@ -27,7 +28,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         #canvas-bg {
@@ -40,41 +41,78 @@
             pointer-events: none;
         }
 
-        #presentation-container {
+        /* EKRAN WEJŚCIOWY - ODBLOKOWANIE AUDIO */
+        #audio-unlock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #090514;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .unlock-box {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(255, 42, 85, 0.2);
+        }
+
+        .unlock-btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(255, 42, 85, 0.4);
+            animation: pulseBtn 2s infinite;
+        }
+
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        /* GŁÓWNY PANEL STRONY (DŁUGA STRONA) */
+        #main-content {
+            display: none;
             width: 100%;
             max-width: 550px;
             z-index: 5;
-            position: relative;
-        }
-
-        .slide {
-            display: none;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 40px 30px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 42, 85, 0.35);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-            text-align: center;
-            animation: fadeInSlide 1s ease-in-out forwards;
-        }
-
-        .slide.active {
-            display: block;
-        }
-
-        @keyframes fadeInSlide {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            padding: 40px 0;
         }
 
         h1 {
             font-family: 'Caveat', cursive;
             color: #fff;
             font-size: 3.2rem;
+            text-align: center;
             margin-bottom: 25px;
             text-shadow: 0 0 10px var(--primary), 0 0 20px var(--accent);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 35px;
         }
 
         .neon-row {
@@ -86,9 +124,15 @@
             align-items: center;
             gap: 20px;
             border-left: 5px solid var(--primary);
-            text-align: left;
+            transition: transform 0.3s;
         }
 
+        .neon-row:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 15px rgba(255, 42, 85, 0.3);
+        }
+
+        .neon-row:last-child { margin-bottom: 0; }
         .row-icon { font-size: 2.3rem; }
         .row-text { display: flex; flex-direction: column; }
 
@@ -106,51 +150,77 @@
             color: #fff;
         }
 
+        .music-widget {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(255,42,85,0.2) 0%, rgba(0,0,0,0.6) 100%);
+            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid var(--primary);
+        }
+
+        .music-info h3 { font-size: 1.3rem; font-weight: 700; color: #fff; }
+        .music-info p { font-size: 0.9rem; color: var(--accent); margin-top: 3px; }
+
+        .disc-icon {
+            font-size: 2.8rem;
+            animation: spinDisc 4s linear infinite;
+        }
+        @keyframes spinDisc { 100% { transform: rotate(360deg); } }
+
         .letter-content {
             font-family: 'Caveat', cursive;
             font-size: 2.2rem;
             line-height: 1.6;
+            text-align: center;
             color: #f7fafc;
         }
 
         .signature {
             font-family: 'Caveat', cursive;
             font-size: 2.6rem;
-            margin-top: 20px;
-            color: var(--accent);
-            text-shadow: 0 0 10px var(--primary);
-        }
-
-        /* Pasek postępu automatycznego slajdu */
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
             margin-top: 25px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            animation: progressAnim 5s linear infinite;
-        }
-        @keyframes progressAnim {
-            from { width: 0%; }
-            to { width: 100%; }
+            color: var(--accent);
+            text-align: center;
+            text-shadow: 0 0 10px var(--primary);
         }
     </style>
 </head>
 <body>
 
+    <!-- Animowane tło ze spadającymi serduszkami -->
     <canvas id="canvas-bg"></canvas>
 
-    <!-- Prezentacja automatyczna -->
-    <div id="presentation-container">
+    <!-- Ekran startowy do włączenia muzyki -->
+    <div id="audio-unlock-screen">
+        <div class="unlock-box">
+            <h2 style="margin-bottom: 20px;">Niespodzianka dla Konstancji ❤️</h2>
+            <button class="unlock-btn" onclick="startEverything()">Otwórz Serce ✨</button>
+        </div>
+    </div>
+
+    <!-- Odtwarzacz audio w tle -->
+    <audio id="audio-track" loop>
+        <source src="https://archive.org" type="audio/mp3">
+    </audio>
+
+    <!-- Główna zawartość strony -->
+    <div id="main-content">
         
-        <!-- SLAJD 1: Nasze Urodziny -->
-        <div class="slide active">
+        <!-- Piosenka Janka -->
+        <div class="card">
+            <div class="music-widget">
+                <div class="music-info">
+                    <h3>Janek - Nie jest wcale</h3>
+                    <p>Nasza ulubiona nuta 🎵</p>
+                </div>
+                <div class="disc-icon">🎵</div>
+            </div>
+        </div>
+
+        <!-- Sekcja: Nasze Urodziny -->
+        <div class="card">
             <h1>Nasze Urodziny</h1>
             <div class="neon-row">
                 <div class="row-icon">👦</div>
@@ -166,11 +236,10 @@
                     <span class="val">26 Sierpnia 2009 r.</span>
                 </div>
             </div>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
         </div>
 
-        <!-- SLAJD 2: Ważne Daty -->
-        <div class="slide">
+        <!-- Sekcja: Ważne Daty -->
+        <div class="card">
             <h1>Ważne Daty</h1>
             <div class="neon-row">
                 <div class="row-icon">⚡</div>
@@ -193,92 +262,35 @@
                     <span class="val">14 Maja 2026 r.</span>
                 </div>
             </div>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
         </div>
 
-        <!-- SLAJD 3: Nasze Chwile -->
-        <div class="slide">
-            <h1>Nasze Chwile</h1>
-            <div class="neon-row">
-                <div class="row-icon">⏳</div>
-                <div class="row-text">
-                    <span class="label">Każda sekwencja z Tobą</span>
-                    <span class="val">To najlepszy czas w moim życiu.</span>
-                </div>
-            </div>
-            <div class="neon-row">
-                <div class="row-icon">🌌</div>
-                <div class="row-text">
-                    <span class="label">Ulubione chwile</span>
-                    <span class="val">Rozmowy do późnej nocy...</span>
-                </div>
-            </div>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-        </div>
-
-        <!-- SLAJD 4: Przyszłość -->
-        <div class="slide">
-            <h1>Nasza Przyszłość</h1>
-            <div class="neon-row">
-                <div class="row-icon">🏡</div>
-                <div class="row-text">
-                    <span class="label">Wspólne plany</span>
-                    <span class="val">Tysiące kolejnych wspomnień...</span>
-                </div>
-            </div>
-            <div class="neon-row">
-                <div class="row-icon">🔐</div>
-                <div class="row-text">
-                    <span class="label">Obietnica serca</span>
-                    <span class="val">Zawsze będę przy Tobie.</span>
-                </div>
-            </div>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-        </div>
-
-        <!-- SLAJD 5: Muzyka -->
-        <div class="slide">
-            <h1>Nasza Muzyka</h1>
-            <div style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 20px; border: 1px dashed var(--primary);">
-                <span style="font-size: 3.5rem; display: block; margin-bottom: 10px; animation: spinDisc 4s linear infinite;">🎵</span>
-                <h3 style="font-size: 1.4rem; color: #fff;">Nie jest wcale</h3>
-                <p style="color: var(--accent); font-size: 0.95rem; margin-top: 5px; font-weight: 600;">Utwór: Janek</p>
-            </div>
-            <style>@keyframes spinDisc { 100% { transform: rotate(360deg); } }</style>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-        </div>
-
-        <!-- SLAJD 6: List miłosny (Ostatni slajd zostaje na stałe) -->
-        <div class="slide">
-            <h1>Dla Ciebie...</h1>
+        <!-- Sekcja: List Miłosny -->
+        <div class="card">
             <div class="letter-content">
-                "Konstansiu, dziękuję że Cię mam. Kocham Cię całym moim serduszkiem i mam nadzieję, że spędzimy całe życie razem. Kocham Cię bardzoooooooooo!"
+                "konstansiu dziekuje ze cie mam kocham cie calym moim serduszkiem i mam nadzieje ze spedzimy cale zycie razem kocham cie bardzoooooooooo"
             </div>
             <div class="signature">Na zawsze Twój ❤️</div>
         </div>
     </div>
 
     <script>
-        // Automatyczny licznik slajdów (zmienia slajd samoczynnie co 5000 milisekund = 5 sekund)
-        var currentSlideIndex = 0;
-        var slides = document.querySelectorAll('.slide');
-        
-        var slideInterval = setInterval(function() {
-            slides[currentSlideIndex].classList.remove('active');
-            currentSlideIndex++;
+        function startEverything() {
+            var screen = document.getElementById('audio-unlock-screen');
+            var main = document.getElementById('main-content');
+            var track = document.getElementById('audio-track');
             
-            if (currentSlideIndex < slides.length) {
-                slides[currentSlideIndex].classList.add('active');
-            } else {
-                // Zatrzymujemy automat na ostatnim slajdzie z listem
-                clearInterval(slideInterval);
-                // Przywracamy indeks na ostatni, aby nie zepsuć widoku
-                currentSlideIndex = slides.length - 1;
-                slides[currentSlideIndex].classList.add('active');
-            }
-        }, 5000);
+            screen.style.opacity = '0';
+            setTimeout(function() {
+                screen.style.display = 'none';
+                main.style.display = 'block';
+            }, 500);
 
-        // --- ANIMACJA SPADAJĄCYCH SERDUSZEK ---
+            track.play().catch(function(e) {
+                console.log("Błąd odtwarzania audio");
+            });
+        }
+
+        // --- APELACJA SPADAJĄCYCH SERDUSZEK ---
         var canvas = document.getElementById('canvas-bg');
         var ctx = canvas.getContext('2d');
 
@@ -288,4 +300,17 @@
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
+
+        var heartCount = 35;
+        var hearts = [];
+
+        function resetHeart(h) {
+            h.x = Math.random() * canvas.width;
+            h.y = -30;
+            h.size = Math.random() * 10 + 6;
+            h.speedY = Math.random() * 1.2 + 0.6;
+            h.opacity = Math.random() * 0.4 + 0.2;
+            h.swing = Math.random() * 5;
+            h.swingSpeed = Math.random() * 0.03 + 0.01;
+        }
 
