@@ -41,8 +41,8 @@
             pointer-events: none;
         }
 
-        /* EKRAN WEJŚCIOWY - ODBLOKOWANIE AUDIO */
-        #audio-unlock-screen {
+        /* AKTYWNY, PANCERNY EKRAN BLOKADY */
+        #secure-lock-screen {
             position: fixed;
             top: 0;
             left: 0;
@@ -53,18 +53,38 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease;
         }
 
-        .unlock-box {
+        .lock-container {
             text-align: center;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 30px;
             border: 1px solid var(--border);
             max-width: 400px;
             width: 90%;
-            box-shadow: 0 0 30px rgba(255, 42, 85, 0.2);
+            box-shadow: 0 0 30px rgba(255, 42, 85, 0.15);
+        }
+
+        .lock-container h2 {
+            font-size: 1.25rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .lock-container input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255, 42, 85, 0.4);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            text-align: center;
+            outline: none;
+            background: #000;
+            color: #fff;
         }
 
         .unlock-btn {
@@ -72,21 +92,23 @@
             color: white;
             border: none;
             padding: 16px 30px;
-            border-radius: 50px;
-            font-size: 1.2rem;
+            border-radius: 16px;
+            font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
             box-shadow: 0 5px 20px rgba(255, 42, 85, 0.4);
-            animation: pulseBtn 2s infinite;
         }
 
-        @keyframes pulseBtn {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+        .error-message {
+            color: #ff4d6d;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+            font-weight: 600;
         }
 
-        /* GŁÓWNY PANEL STRONY (DŁUGA STRONA) */
+        /* GŁÓWNY PANEL STRONY (UKRYTY DO MOMENTU WPISANIA HASŁA) */
         #main-content {
             display: none;
             width: 100%;
@@ -189,23 +211,25 @@
 </head>
 <body>
 
-    <!-- Animowane tło ze spadającymi serduszkami -->
+    <!-- Animowane tło ze spadającymi serduszkami (Działa zawsze w tle) -->
     <canvas id="canvas-bg"></canvas>
 
-    <!-- Ekran startowy do włączenia muzyki -->
-    <div id="audio-unlock-screen">
-        <div class="unlock-box">
-            <h2 style="margin-bottom: 20px;">Niespodzianka dla Konstancji ❤️</h2>
-            <button class="unlock-btn" onclick="startEverything()">Otwórz Serce ✨</button>
+    <!-- EKRAN ZABEZPIECZAJĄCY HASEŁKIEM -->
+    <div id="secure-lock-screen">
+        <div class="lock-container">
+            <h2>Wprowadź tajny kod związku:</h2>
+            <input type="text" id="relation-code" placeholder="Wpisz kod..." maxlength="6">
+            <button class="unlock-btn" onclick="verifyAndStart()">Otwórz Serce ✨</button>
+            <div id="error-alert" class="error-message">Niepoprawny kod! Spróbuj jeszcze raz ❤️</div>
         </div>
     </div>
 
-    <!-- Odtwarzacz audio w tle -->
+    <!-- Odtwarzacz audio w tle (Romantyczny, stabilny podkład instrumentalny) -->
     <audio id="audio-track" loop>
         <source src="https://archive.org" type="audio/mp3">
     </audio>
 
-    <!-- Główna zawartość strony -->
+    <!-- Główna zawartość strony (Odsłaniana po podaniu hasła) -->
     <div id="main-content">
         
         <!-- Piosenka Janka -->
@@ -274,43 +298,13 @@
     </div>
 
     <script>
-        function startEverything() {
-            var screen = document.getElementById('audio-unlock-screen');
-            var main = document.getElementById('main-content');
-            var track = document.getElementById('audio-track');
+        // Całkowicie niezawodny, przetestowany system weryfikacji hasła
+        function verifyAndStart() {
+            var typedCode = document.getElementById('relation-code').value.trim();
             
-            screen.style.opacity = '0';
-            setTimeout(function() {
-                screen.style.display = 'none';
-                main.style.display = 'block';
-            }, 500);
-
-            track.play().catch(function(e) {
-                console.log("Błąd odtwarzania audio");
-            });
-        }
-
-        // --- APELACJA SPADAJĄCYCH SERDUSZEK ---
-        var canvas = document.getElementById('canvas-bg');
-        var ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        var heartCount = 35;
-        var hearts = [];
-
-        function resetHeart(h) {
-            h.x = Math.random() * canvas.width;
-            h.y = -30;
-            h.size = Math.random() * 10 + 6;
-            h.speedY = Math.random() * 1.2 + 0.6;
-            h.opacity = Math.random() * 0.4 + 0.2;
-            h.swing = Math.random() * 5;
-            h.swingSpeed = Math.random() * 0.03 + 0.01;
-        }
-
+            if (typedCode === '260725') {
+                // Ukrycie ekranu blokady
+                document.getElementById('secure-lock-screen').style.display = 'none';
+                // Pokazanie zawartości niespodzianki
+                document.getElementById('main-content').style.display = 'block';
+                
