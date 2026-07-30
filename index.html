@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dla Mojej Konstancji ❤️</title>
-    <!-- Import pięknych, nowoczesnych czcionek z Google Fonts -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
             --primary: #ff2a55;
             --accent: #ff758c;
             --bg-dark: #0f0c1b;
-            --card-bg: rgba(255, 255, 255, 0.07);
-            --border: rgba(255, 42, 85, 0.3);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 42, 85, 0.35);
         }
 
         * {
@@ -22,7 +21,6 @@
         }
 
         body {
-            background-color: var(--bg-dark);
             background: radial-gradient(circle at center, #1f122b 0%, #090514 100%);
             color: #fff;
             font-family: 'Montserrat', sans-serif;
@@ -34,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* Canvas - Spadające serduszka */
         #canvas-bg {
             position: fixed;
             top: 0;
@@ -45,7 +42,6 @@
             pointer-events: none;
         }
 
-        /* Ekran blokady */
         #lock-screen {
             position: fixed;
             top: 0;
@@ -57,11 +53,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 1s ease-in-out;
+            transition: all 0.8s ease-in-out;
         }
 
         .lock-box {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 40px 30px;
@@ -69,17 +65,16 @@
             text-align: center;
             max-width: 400px;
             width: 90%;
-            border: 1px solid rgba(255, 42, 85, 0.2);
-            box-shadow: 0 0 40px rgba(255, 42, 85, 0.1);
+            border: 1px solid var(--border);
+            box-shadow: 0 0 40px rgba(255, 42, 85, 0.15);
         }
 
         .lock-box h2 {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             margin-bottom: 25px;
             font-weight: 600;
-            letter-spacing: 1px;
             color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
         }
 
         .lock-box input {
@@ -92,15 +87,8 @@
             text-align: center;
             letter-spacing: 8px;
             outline: none;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             color: #fff;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            transition: all 0.3s;
-        }
-
-        .lock-box input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(255, 42, 85, 0.4);
         }
 
         .lock-box button {
@@ -117,11 +105,6 @@
             transition: all 0.3s;
         }
 
-        .lock-box button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 42, 85, 0.6);
-        }
-
         .error-text {
             color: #ff4d6d;
             margin-top: 15px;
@@ -130,32 +113,24 @@
             font-weight: 600;
         }
 
-        /* Główna zawartość */
         #main-content {
             display: none;
             width: 100%;
             max-width: 550px;
             z-index: 5;
             opacity: 0;
-            transition: opacity 1.5s ease;
+            transition: opacity 1.2s ease;
             padding: 20px 0;
         }
 
-        /* Stylizacja nagłówków sekcji */
         h1 {
             font-family: 'Caveat', cursive;
             color: #fff;
-            font-size: 3rem;
+            font-size: 3.2rem;
             text-align: center;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+            margin-bottom: 25px;
+            letter-spacing: 1.5px;
             text-shadow: 0 0 10px var(--primary), 0 0 20px var(--accent);
-            animation: pulseGlow 2s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            from { text-shadow: 0 0 10px var(--primary), 0 0 20px var(--accent); }
-            to { text-shadow: 0 0 15px var(--primary), 0 0 30px var(--accent), 0 0 40px var(--primary); }
         }
 
         .card {
@@ -165,34 +140,32 @@
             padding: 30px;
             border-radius: 30px;
             border: 1px solid var(--border);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             margin-bottom: 35px;
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(40px);
         }
 
-        /* Klasa dodawana przez JS dająca efekt animowanego wjazdu */
         .show-card {
-            animation: customFadeIn 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            animation: customFadeIn 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
         @keyframes customFadeIn {
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Super nowoczesne wiersze z napisami */
+        /* Nowoczesne świecące kafelki z napisami */
         .neon-row {
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.3);
             padding: 20px;
             border-radius: 20px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.03);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             position: relative;
-            overflow: hidden;
         }
 
         .neon-row::before {
@@ -203,21 +176,22 @@
             width: 4px;
             height: 100%;
             background: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
+            box-shadow: 0 0 12px var(--primary);
+            border-radius: 2px 0 0 2px;
         }
 
         .neon-row:hover {
-            transform: scale(1.04) translateY(-3px);
+            transform: scale(1.03) translateY(-2px);
             border-color: var(--primary);
             box-shadow: 0 10px 25px rgba(255, 42, 85, 0.25);
-            background: rgba(255, 42, 85, 0.03);
+            background: rgba(255, 42, 85, 0.04);
         }
 
         .neon-row:last-child { margin-bottom: 0; }
 
         .row-icon {
-            font-size: 2.2rem;
-            filter: drop-shadow(0 0 8px var(--primary));
+            font-size: 2.3rem;
+            filter: drop-shadow(0 0 6px var(--primary));
         }
 
         .row-text {
@@ -234,31 +208,26 @@
         }
 
         .row-text .val {
-            font-size: 1.3rem;
+            font-size: 1.35rem;
             font-weight: 700;
             color: #fff;
-            letter-spacing: 0.5px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        /* Odtwarzacz Muzyczny premium */
+        /* Odtwarzacz muzyczny */
         .music-widget {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(135deg, rgba(255,42,85,0.1) 0%, rgba(0,0,0,0.4) 100%);
+            background: linear-gradient(135deg, rgba(255,42,85,0.12) 0%, rgba(0,0,0,0.45) 100%);
             padding: 25px;
             border-radius: 24px;
             border: 1px solid var(--primary);
             box-shadow: 0 0 25px rgba(255,42,85,0.15);
         }
 
-        .music-info {
-            text-align: left;
-        }
-
         .music-info h3 {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #fff;
         }
@@ -266,13 +235,13 @@
         .music-info p {
             font-size: 0.9rem;
             color: var(--accent);
-            margin-top: 2px;
+            margin-top: 3px;
             font-weight: 600;
         }
 
         .play-circle {
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             background: #fff;
             border-radius: 50%;
             display: flex;
@@ -288,38 +257,31 @@
             background: var(--primary);
         }
 
-        .play-circle svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--bg-dark);
-            transition: fill 0.3s;
-            margin-left: 4px; /* Optyczne wyśrodkowanie trójkąta */
+        .play-icon-shape {
+            font-size: 1.6rem;
+            color: var(--bg-dark);
+            margin-left: 4px;
+            user-select: none;
         }
 
-        .play-circle:hover svg {
-            fill: #fff;
+        .play-circle:hover .play-icon-shape {
+            color: #fff;
         }
 
-        /* List Miłosny */
-        .letter-box {
-            position: relative;
-            padding: 15px 10px;
-        }
-
+        /* List miłosny */
         .letter-content {
             font-family: 'Caveat', cursive;
-            font-size: 1.8rem;
+            font-size: 2rem;
             line-height: 1.6;
             text-align: center;
             color: #f7fafc;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
         }
 
         .signature {
             font-family: 'Caveat', cursive;
-            font-size: 2.2rem;
-            margin-top: 30px;
+            font-size: 2.4rem;
+            margin-top: 25px;
             color: var(--accent);
             text-align: center;
             text-shadow: 0 0 10px var(--primary);
@@ -328,7 +290,7 @@
 </head>
 <body>
 
-    <!-- Animowane tło ze SPADAJĄCYMI sercami -->
+    <!-- Animowane tło ze SPADAJĄCYMI serduszekami -->
     <canvas id="canvas-bg"></canvas>
 
     <!-- KROK 1: Ekran blokady -->
@@ -341,6 +303,39 @@
         </div>
     </div>
 
-    <!-- KROK 2: Główna zawartość -->
+    <!-- KROK 2: Panel Główny -->
     <div id="main-content">
         
+        <div class="card" id="card1">
+            <h1>Nasze Urodziny</h1>
+            <div class="neon-row">
+                <div class="row-icon">👦</div>
+                <div class="row-text">
+                    <span class="label">Moje Urodziny</span>
+                    <span class="val">17 Listopada 2008 r.</span>
+                </div>
+            </div>
+            <div class="neon-row">
+                <div class="row-icon">👧</div>
+                <div class="row-text">
+                    <span class="label">Urodziny Konstancji</span>
+                    <span class="val">26 Sierpnia 2009 r.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="card2">
+            <h1>Ważne Daty</h1>
+            <div class="neon-row">
+                <div class="row-icon">⚡</div>
+                <div class="row-text">
+                    <span class="label">Dzień, w którym się poznaliśmy</span>
+                    <span class="val">26 Lipca 2025 r.</span>
+                </div>
+            </div>
+            <div class="neon-row">
+                <div class="row-icon">🔥</div>
+                <div class="row-text">
+                    <span class="label">Oficjalnie razem od</span>
+                    <span class="val">14 Listopada 2025 r.</span>
+                </div>
