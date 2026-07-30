@@ -10,8 +10,6 @@
             --primary: #ff2a55;
             --accent: #ff758c;
             --bg-dark: #0f0c1b;
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 42, 85, 0.35);
         }
 
         * {
@@ -42,22 +40,22 @@
             pointer-events: none;
         }
 
+        /* EKRAN BLOKADY */
         #lock-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1f122b, #090514);
+            background: #090514;
             z-index: 999;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.8s ease-in-out;
         }
 
         .lock-box {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 40px 30px;
@@ -65,29 +63,27 @@
             text-align: center;
             max-width: 400px;
             width: 90%;
-            border: 1px solid var(--border);
-            box-shadow: 0 0 40px rgba(255, 42, 85, 0.15);
+            border: 1px solid rgba(255, 42, 85, 0.3);
+            box-shadow: 0 0 30px rgba(255, 42, 85, 0.15);
         }
 
         .lock-box h2 {
             font-size: 1.25rem;
             margin-bottom: 25px;
             font-weight: 600;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.2);
         }
 
         .lock-box input {
             width: 100%;
             padding: 16px;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 42, 85, 0.4);
             border-radius: 16px;
             margin-bottom: 20px;
             font-size: 1.4rem;
             text-align: center;
             letter-spacing: 8px;
             outline: none;
-            background: rgba(0, 0, 0, 0.5);
+            background: #000;
             color: #fff;
         }
 
@@ -101,8 +97,6 @@
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            box-shadow: 0 5px 20px rgba(255, 42, 85, 0.4);
-            transition: all 0.3s;
         }
 
         .error-text {
@@ -113,13 +107,12 @@
             font-weight: 600;
         }
 
+        /* GŁÓWNA ZAWARTOŚĆ */
         #main-content {
-            display: none;
+            display: none; /* Włączane przez JS */
             width: 100%;
             max-width: 550px;
             z-index: 5;
-            opacity: 0;
-            transition: opacity 1.2s ease;
             padding: 20px 0;
         }
 
@@ -129,32 +122,21 @@
             font-size: 3.2rem;
             text-align: center;
             margin-bottom: 25px;
-            letter-spacing: 1.5px;
             text-shadow: 0 0 10px var(--primary), 0 0 20px var(--accent);
         }
 
         .card {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             padding: 30px;
             border-radius: 30px;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 42, 85, 0.35);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             margin-bottom: 35px;
-            opacity: 0;
-            transform: translateY(40px);
         }
 
-        .show-card {
-            animation: customFadeIn 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-        }
-
-        @keyframes customFadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Nowoczesne świecące kafelki z napisami */
+        /* Neonowe, ciekawsze kafelki */
         .neon-row {
             background: rgba(0, 0, 0, 0.3);
             padding: 20px;
@@ -163,41 +145,20 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            border: 1px solid rgba(255,255,255,0.03);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-        }
-
-        .neon-row::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
-            box-shadow: 0 0 12px var(--primary);
-            border-radius: 2px 0 0 2px;
+            border-left: 5px solid var(--primary);
+            transition: transform 0.3s;
         }
 
         .neon-row:hover {
-            transform: scale(1.03) translateY(-2px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(255, 42, 85, 0.25);
-            background: rgba(255, 42, 85, 0.04);
+            transform: scale(1.03);
+            box-shadow: 0 0 15px rgba(255, 42, 85, 0.3);
         }
 
         .neon-row:last-child { margin-bottom: 0; }
 
-        .row-icon {
-            font-size: 2.3rem;
-            filter: drop-shadow(0 0 6px var(--primary));
-        }
+        .row-icon { font-size: 2.3rem; }
 
-        .row-text {
-            display: flex;
-            flex-direction: column;
-        }
+        .row-text { display: flex; flex-direction: column; }
 
         .row-text .label {
             font-size: 0.8rem;
@@ -211,33 +172,21 @@
             font-size: 1.35rem;
             font-weight: 700;
             color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        /* Odtwarzacz muzyczny */
+        /* Odtwarzacz */
         .music-widget {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(135deg, rgba(255,42,85,0.12) 0%, rgba(0,0,0,0.45) 100%);
+            background: linear-gradient(135deg, rgba(255,42,85,0.15) 0%, rgba(0,0,0,0.5) 100%);
             padding: 25px;
             border-radius: 24px;
             border: 1px solid var(--primary);
-            box-shadow: 0 0 25px rgba(255,42,85,0.15);
         }
 
-        .music-info h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .music-info p {
-            font-size: 0.9rem;
-            color: var(--accent);
-            margin-top: 3px;
-            font-weight: 600;
-        }
+        .music-info h3 { font-size: 1.3rem; font-weight: 700; color: #fff; }
+        .music-info p { font-size: 0.9rem; color: var(--accent); margin-top: 3px; }
 
         .play-circle {
             width: 55px;
@@ -249,38 +198,26 @@
             align-items: center;
             cursor: pointer;
             box-shadow: 0 0 20px var(--primary);
-            transition: all 0.3s ease;
-        }
-
-        .play-circle:hover {
-            transform: scale(1.1);
-            background: var(--primary);
         }
 
         .play-icon-shape {
             font-size: 1.6rem;
-            color: var(--bg-dark);
+            color: #0f0c1b;
             margin-left: 4px;
-            user-select: none;
-        }
-
-        .play-circle:hover .play-icon-shape {
-            color: #fff;
         }
 
         /* List miłosny */
         .letter-content {
             font-family: 'Caveat', cursive;
-            font-size: 2rem;
+            font-size: 2.1rem;
             line-height: 1.6;
             text-align: center;
             color: #f7fafc;
-            letter-spacing: 0.5px;
         }
 
         .signature {
             font-family: 'Caveat', cursive;
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             margin-top: 25px;
             color: var(--accent);
             text-align: center;
@@ -290,10 +227,10 @@
 </head>
 <body>
 
-    <!-- Animowane tło ze SPADAJĄCYMI serduszekami -->
+    <!-- Spadające serduszka -->
     <canvas id="canvas-bg"></canvas>
 
-    <!-- KROK 1: Ekran blokady -->
+    <!-- KROK 1: Blokada -->
     <div id="lock-screen">
         <div class="lock-box">
             <h2>Wprowadź tajny kod związku:</h2>
@@ -303,10 +240,10 @@
         </div>
     </div>
 
-    <!-- KROK 2: Panel Główny -->
+    <!-- KROK 2: Zawartość strony -->
     <div id="main-content">
         
-        <div class="card" id="card1">
+        <div class="card">
             <h1>Nasze Urodziny</h1>
             <div class="neon-row">
                 <div class="row-icon">👦</div>
@@ -324,7 +261,7 @@
             </div>
         </div>
 
-        <div class="card" id="card2">
+        <div class="card">
             <h1>Ważne Daty</h1>
             <div class="neon-row">
                 <div class="row-icon">⚡</div>
@@ -339,3 +276,49 @@
                     <span class="label">Oficjalnie razem od</span>
                     <span class="val">14 Listopada 2025 r.</span>
                 </div>
+            </div>
+            <div class="neon-row">
+                <div class="row-icon">👑</div>
+                <div class="row-text">
+                    <span class="label">Wspólne pół roku</span>
+                    <span class="val">14 Maja 2026 r.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="music-widget">
+                <div class="music-info">
+                    <h3>Nie jest wcale</h3>
+                    <p>Janek • Nasza nuta</p>
+                </div>
+                <div class="play-circle" onclick="toggleMusic()">
+                    <span id="music-btn-text" class="play-icon-shape">▶</span>
+                </div>
+            </div>
+            <audio id="audio-track" src="https://soundhelix.com" preload="auto"></audio>
+        </div>
+
+        <div class="card">
+            <div class="letter-content">
+                "Konstansiu, dziękuję że Cię mam. Kocham Cię całym moim serduszkiem i mam nadzieję, że spędzimy całe życie razem. Kocham Cię bardzoooooooooo!"
+            </div>
+            <div class="signature">Na zawsze Twój ❤️</div>
+        </div>
+    </div>
+
+    <script>
+        // Najprostsza, pancerna weryfikacja kodu dostępu
+        function check() {
+            var i = document.getElementById('pass').value;
+            if (i === '260725') {
+                document.getElementById('lock-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            } else {
+                document.getElementById('err').style.display = 'block';
+                document.getElementById('pass').value = '';
+            }
+        }
+
+        // Odtwarzacz audio
+        var audio = document.getElementById('audio-track');
