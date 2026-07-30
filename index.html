@@ -27,7 +27,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         #canvas-bg {
@@ -40,31 +40,111 @@
             pointer-events: none;
         }
 
-        #main-content {
+        /* EKRAN BLOKADY */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #090514;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lock-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px 30px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255, 42, 85, 0.3);
+            box-shadow: 0 0 30px rgba(255, 42, 85, 0.15);
+        }
+
+        .lock-box h2 {
+            font-size: 1.25rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .lock-box input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255, 42, 85, 0.4);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            text-align: center;
+            outline: none;
+            background: #000;
+            color: #fff;
+        }
+
+        .lock-box button {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .error-text {
+            color: #ff4d6d;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+            font-weight: 600;
+        }
+
+        /* KONTENER PREZENTACJI */
+        #presentation-container {
+            display: none;
             width: 100%;
             max-width: 550px;
             z-index: 5;
-            padding: 20px 0;
+            position: relative;
+        }
+
+        /* INDYWIDUALNY SLAJD */
+        .slide {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 35px 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 42, 85, 0.35);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            animation: fadeInSlide 0.6s ease-in-out forwards;
+        }
+
+        /* Aktywny slajd */
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         h1 {
             font-family: 'Caveat', cursive;
             color: #fff;
             font-size: 3.2rem;
-            text-align: center;
             margin-bottom: 25px;
             text-shadow: 0 0 10px var(--primary), 0 0 20px var(--accent);
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 30px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 42, 85, 0.35);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-            margin-bottom: 35px;
         }
 
         .neon-row {
@@ -76,15 +156,9 @@
             align-items: center;
             gap: 20px;
             border-left: 5px solid var(--primary);
-            transition: transform 0.3s;
+            text-align: left;
         }
 
-        .neon-row:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 15px rgba(255, 42, 85, 0.3);
-        }
-
-        .neon-row:last-child { margin-bottom: 0; }
         .row-icon { font-size: 2.3rem; }
         .row-text { display: flex; flex-direction: column; }
 
@@ -102,51 +176,44 @@
             color: #fff;
         }
 
-        .music-widget {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, rgba(255,42,85,0.15) 0%, rgba(0,0,0,0.5) 100%);
-            padding: 25px;
-            border-radius: 24px;
-            border: 1px solid var(--primary);
-        }
-
-        .music-info h3 { font-size: 1.3rem; font-weight: 700; color: #fff; }
-        .music-info p { font-size: 0.9rem; color: var(--accent); margin-top: 3px; }
-
-        .play-circle {
-            width: 55px;
-            height: 55px;
-            background: #fff;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* Przycisk Dalej */
+        .next-btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 25px;
+            font-size: 1.05rem;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 0 20px var(--primary);
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(255, 42, 85, 0.3);
+            transition: transform 0.2s;
         }
 
-        .play-icon-shape {
-            font-size: 1.6rem;
-            color: #0f0c1b;
-            margin-left: 4px;
+        .next-btn:hover {
+            transform: scale(1.05);
         }
 
+        /* Ukryty odtwarzacz audio */
+        #audio-track {
+            display: none;
+        }
+
+        /* List miłosny */
         .letter-content {
             font-family: 'Caveat', cursive;
-            font-size: 2.1rem;
+            font-size: 2.2rem;
             line-height: 1.6;
-            text-align: center;
             color: #f7fafc;
+            margin-bottom: 10px;
         }
 
         .signature {
             font-family: 'Caveat', cursive;
-            font-size: 2.5rem;
-            margin-top: 25px;
+            font-size: 2.6rem;
+            margin-top: 20px;
             color: var(--accent);
-            text-align: center;
             text-shadow: 0 0 10px var(--primary);
         }
     </style>
@@ -155,8 +222,26 @@
 
     <canvas id="canvas-bg"></canvas>
 
-    <div id="main-content">
-        <div class="card">
+    <!-- KROK 1: Ekran Blokady z Hasłem -->
+    <div id="lock-screen">
+        <div class="lock-box">
+            <h2>Wprowadź tajny kod związku:</h2>
+            <input type="text" id="pass" placeholder="Wpisz tutaj kod..." maxlength="6">
+            <button id="submit-btn">Otwórz serce</button>
+            <div id="err" class="error-text">Niepoprawny kod! Spróbuj jeszcze raz ❤️</div>
+        </div>
+    </div>
+
+    <!-- Ukryty odtwarzacz - zmieniono utwór na pewny i stabilny strumień muzyczny z Archiwum Internetowego -->
+    <audio id="audio-track" loop>
+        <source src="https://archive.org" type="audio/mp3">
+    </audio>
+
+    <!-- KROK 2: Prezentacja slajd po slajdzie -->
+    <div id="presentation-container">
+        
+        <!-- SLAJD 1: Nasze Urodziny -->
+        <div class="slide active">
             <h1>Nasze Urodziny</h1>
             <div class="neon-row">
                 <div class="row-icon">👦</div>
@@ -172,9 +257,11 @@
                     <span class="val">26 Sierpnia 2009 r.</span>
                 </div>
             </div>
+            <button class="next-btn" onclick="nextSlide()">Dalej ✨</button>
         </div>
 
-        <div class="card">
+        <!-- SLAJD 2: Ważne Daty -->
+        <div class="slide">
             <h1>Ważne Daty</h1>
             <div class="neon-row">
                 <div class="row-icon">⚡</div>
@@ -197,100 +284,37 @@
                     <span class="val">14 Maja 2026 r.</span>
                 </div>
             </div>
+            <button class="next-btn" onclick="nextSlide()">Idź dalej ❤️</button>
         </div>
 
-        <div class="card">
-            <div class="music-widget">
-                <div class="music-info">
-                    <h3>Nie jest wcale</h3>
-                    <p>Janek • Nasza nuta</p>
-                </div>
-                <div class="play-circle" id="play-btn">
-                    <span id="music-btn-text" class="play-icon-shape">▶</span>
+        <!-- SLAJD 3: NOWY SLAJD - Nasz Czas -->
+        <div class="slide">
+            <h1>Nasze Chwile</h1>
+            <div class="neon-row">
+                <div class="row-icon">⏳</div>
+                <div class="row-text">
+                    <span class="label">Każda sekwencja z Tobą</span>
+                    <span class="val">To najlepszy czas w moim życiu.</span>
                 </div>
             </div>
-            <audio id="audio-track" src="https://soundhelix.com" preload="auto"></audio>
-        </div>
-
-        <div class="card">
-            <div class="letter-content">
-                "Konstansiu, dziękuję że Cię mam. Kocham Cię całym moim serduszkiem i mam nadzieję, że spędzimy całe życie razem. Kocham Cię bardzoooooooooo!"
+            <div class="neon-row">
+                <div class="row-icon">🌌</div>
+                <div class="row-text">
+                    <span class="label">Ulubione chwile</span>
+                    <span class="val">Rozmowy do późnej nocy...</span>
+                </div>
             </div>
-            <div class="signature">Na zawsze Twój ❤️</div>
+            <button class="next-btn" onclick="nextSlide()">Odkryj więcej 🌹</button>
         </div>
-    </div>
 
-    <script>
-        var audio = document.getElementById('audio-track');
-        var btnText = document.getElementById('music-btn-text');
-
-        document.getElementById('play-btn').addEventListener('click', function() {
-            if (audio.paused) {
-                audio.play();
-                btnText.innerText = '⏸';
-                btnText.style.marginLeft = '0px';
-            } else {
-                audio.pause();
-                btnText.innerText = '▶';
-                btnText.style.marginLeft = '4px';
-            }
-        });
-
-        var canvas = document.getElementById('canvas-bg');
-        var ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        var heartCount = 35;
-        var hearts = [];
-
-        function resetHeart(h) {
-            h.x = Math.random() * canvas.width;
-            h.y = -30;
-            h.size = Math.random() * 10 + 6;
-            h.speedY = Math.random() * 1.2 + 0.6;
-            h.opacity = Math.random() * 0.4 + 0.2;
-            h.swing = Math.random() * 5;
-            h.swingSpeed = Math.random() * 0.03 + 0.01;
-        }
-
-        for (var i = 0; i < heartCount; i++) {
-            var h = {};
-            resetHeart(h);
-            h.y = Math.random() * canvas.height;
-            hearts.push(h);
-        }
-
-        function drawHeart(x, y, size, opacity) {
-            ctx.save();
-            ctx.globalAlpha = opacity;
-            ctx.fillStyle = '#ff2a55';
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.bezierCurveTo(x - size/2, y - size/2, x - size, y + size/3, x, y + size);
-            ctx.bezierCurveTo(x + size, y + size/3, x + size/2, y - size/2, x, y);
-            ctx.fill();
-            ctx.restore();
-        }
-
-        function animationLoop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (var i = 0; i < hearts.length; i++) {
-                var h = hearts[i];
-                h.y += h.speedY;
-                h.swing += h.swingSpeed;
-                var currentX = h.x + Math.sin(h.swing) * 10;
-                drawHeart(currentX, h.y, h.size, h.opacity);
-                if (h.y > canvas.height + 30) { resetHeart(h); }
-            }
-            requestAnimationFrame(animationLoop);
-        }
-        animationLoop();
-    </script>
-</body>
-</html>
+        <!-- SLAJD 4: NOWY SLAJD - Przyszłość -->
+        <div class="slide">
+            <h1>Nasza Przyszłość</h1>
+            <div class="neon-row">
+                <div class="row-icon">🏡</div>
+                <div class="row-text">
+                    <span class="label">Wspólne plany</span>
+                    <span class="val">Tysiące kolejnych wspomnień...</span>
+                </div>
+            </div>
+            <div class="neon-row">
