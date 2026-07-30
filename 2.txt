@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dla Konstancji</title>
+    <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --secondary-color: #ff85a1;
+            --dark-color: #2b2d42;
+            --light-color: #fff0f3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* T³o z p³ywaj¹cymi sercami */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Ekran Blokady */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: all 0.8s ease-in-out;
+        }
+
+        .lock-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            animation: pulse 2s infinite;
+        }
+
+        .lock-container h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        .lock-container input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+            letter-spacing: 5px;
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .lock-container button {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .lock-container button:hover {
+            transform: scale(1.05);
+            background-color: var(--light-color);
+        }
+
+        .error-msg {
+            color: #ff3333;
+            background: rgba(255,255,255,0.8);
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        /* G³ówna Zawartoœæ strony */
+        #main-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 650px;
+            padding: 20px;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
+            margin-bottom: 30px;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards ease-out;
+        }
+
+        .card:nth-child(2) { animation-delay: 0.3s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+        .card:nth-child(4) { animation-delay: 0.9s; }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
+
+        /* Osi czasu / Fakty */
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--secondary-color);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            margin-right: 20px;
+        }
+
+        .info-text h3 {
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .info-text p {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        /* Odtwarzacz Muzyczny */
+        .audio-player {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        .player-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .player-author {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .play-btn {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* List Mi³osny */
+        .love-letter {
+            line-height: 1.8;
+            font-size: 1.15rem;
+            text-align: center;
+            color: #4a4e69;
+            font-style: italic;
+        }
+
+        .signature {
+            margin-top: 25px;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        /* Animacje CSS */
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- KROK 1: Ekran Zabezpieczaj¹cy -->
+    <div id="lock-screen">
+        <div class="lock-container">
+            <h2>WprowadŸ tajny kod, aby otworzyæ stronê:</h2>
+            <input type="password" id="password-input" placeholder="••••••" maxlength="6">
+            <button onclick="checkPassword()">Otwórz serce</button>
+            <div id="error" class="error-msg">Niepoprawny kod. Spróbuj ponownie! ??</div>
+        </div>
+    </div>
+
+    <!-- KROK 2: G³ówna zawartoœæ strony -->
+    <div id="main-content">
+        
+        <!-- Karta Nag³ówkowa z urodzinami -->
+        <div class="card">
+            <h1>Nasza Historia</h1>
+            <div class="timeline-item">
+                <div class="icon">??</div>
+                <div class="info-text">
+                    <h3>Moje Urodziny</h3>
+                    <p>17 Listopada 2008 r.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="icon">??</div>
+                <div class="info-text">
+                    <h3>Urodziny Konstancji</h3>
+                    <p>26 Sierpnia 2009 r.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Karta z Wa¿nymi Datami -->
+        <div class="card">
+            <div class="timeline-item">
+                <div class="icon">?</div>
+                <div class="info-text">
+                    <h3>Dzieñ, w którym siê poznaliœmy</h3>
+                    <p>26 Lipca 2025 r.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="icon">??</div>
+                <div class="info-text">
+                    <h3>Oficjalnie razem od</h3>
+                    <p>14 Listopada 2025 r.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="icon">??</div>
+                <div class="info-text">
+                    <h3>Wspólne pó³ roku</h3>
+                    <p>14 Maja 2026 r.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Karta z Odtwarzaczem Muzycznym -->
+        <div class="card">
+            <div class="audio-player">
+                <div class="player-title">Nie jest wcale</div>
+                <div class="player-author">Nasza ulubiona nuta – Janek</div>
+                <div class="controls">
+                    <!-- Podmieñ src w tagu audio na bezpoœredni link URL do pliku mp3 utworu -->
+                    <audio id="love-song" src="https://soundhelix.com"></audio>
+                    <button class="play-btn" id="play-pause-btn" onclick="togglePlay()">?</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Karta z Listem Mi³osnym -->
+        <div class="card">
+            <div class="love-letter">
